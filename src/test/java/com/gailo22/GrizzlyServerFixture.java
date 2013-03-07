@@ -6,12 +6,13 @@ import java.util.Map;
 import com.sun.grizzly.http.SelectorThread;
 import com.sun.jersey.api.container.grizzly.GrizzlyWebContainerFactory;
 
-public class GrizzyServerFixture {
+public class GrizzlyServerFixture {
 
 	public static void main(String[] args) throws Exception {
 		final String baseUri = "http://localhost:9998/";
 		final Map<String, String> initParams = new HashMap<String, String>();
 		initParams.put("com.sun.jersey.config.property.packages", "com.gailo22.resources");
+		initParams.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
 
 		System.out.println("Starting grizzly...");
 		SelectorThread threadSelector = GrizzlyWebContainerFactory.create(baseUri, initParams);
