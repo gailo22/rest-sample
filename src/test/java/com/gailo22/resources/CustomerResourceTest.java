@@ -1,7 +1,7 @@
 package com.gailo22.resources;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -11,13 +11,11 @@ import javax.ws.rs.client.WebTarget;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.gailo22.GrizzlyServerFixture;
 import com.gailo22.model.Customer;
 
-@Ignore
 public class CustomerResourceTest {
 
     private HttpServer server;

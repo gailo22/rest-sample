@@ -1,7 +1,7 @@
 package com.gailo22.resources;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -52,7 +52,7 @@ public class PlanetResourceTest {
 		assertNotNull(planet);
 		assertEquals(1, planet.id);
 		assertEquals("Earth", planet.name);
-		assertEquals(1.0, planet.radius);
+		assertEquals(1.0, planet.radius, 0);
 		
 	}
 }
