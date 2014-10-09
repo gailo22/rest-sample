@@ -3,27 +3,53 @@ package com.gailo22.resources;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.gailo22.GrizzlyServerFixture;
 import com.gailo22.model.Customer;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.test.framework.JerseyTest;
 
 @Ignore
-public class CustomerResourceTest extends JerseyTest {
+public class CustomerResourceTest {
 
-	public CustomerResourceTest() {
-		super("com.gailo22.resources");
-	}
+    private HttpServer server;
+    private WebTarget target;
+    
+    @Before
+    public void setUp() throws Exception {
+        // start the server
+        server = GrizzlyServerFixture.startServer();
+        // create the client
+        Client c = ClientBuilder.newClient();
+
+        // uncomment the following line if you want to enable
+        // support for JSON in the client (you also have to uncomment
+        // dependency on jersey-media-json module in pom.xml and Main.startServer())
+        // --
+        // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
+
+        target = c.target(GrizzlyServerFixture.BASE_URI);
+    }
+    
+    @After
+    public void tearDown() throws Exception {
+        server.shutdownNow();
+    }
 
 	@Test
 	public void shouldReturnCorrectCustomer() {
 		// Given
-		WebResource resource = resource();
 
 		// When
-		Customer customer = resource.path("customers/1").get(Customer.class);
+		Customer customer = target.path("customers/1").request().get(Customer.class);
 
 		// Then
 		assertNotNull(customer);
@@ -33,12 +59,12 @@ public class CustomerResourceTest extends JerseyTest {
 	@Test
 	public void shouldCreateCustomer() {
 		// Given
-		WebResource resource = resource();
 		Customer customer = new Customer();
 		customer.setId(2);
 
 		// When
-		Customer returnCustomer = resource.path("customers").post(Customer.class, customer);
+		Customer returnCustomer = target.path("customers").request().post(
+				Entity.entity(customer, "application/json"), Customer.class);
 
 		// Then
 		assertEquals(2, returnCustomer.getId());
